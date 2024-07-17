@@ -1,0 +1,114 @@
+
+.logo {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 4px;
+    min-height: 124px;
+}
+
+.logo img {
+    display: block;
+    width: 100%;
+    max-width: 687px;
+    margin: 0 auto;
+}
+
+.countdown {
+    display: block;
+    width: calc(100% - 50px);
+    text-align: center;
+    margin: auto;
+}
+
+.countdown .counter {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    width: 100%;
+}
+
+.countdown .counter .value,
+.countdown .counter strong {
+    font-size: 12vw;
+}
+
+.greeting {
+    text-align: center;
+    font-size: 1.2rem;
+    font-style: italic;
+    padding: 8px 0 16px 0;
+}
+
+.countdown .counter .label {
+    text-transform: uppercase;
+    margin: 0 auto;
+    font-size: 1em;
+}
+
+.countdown.exp .counter .value,
+.countdown.exp .counter strong {
+    color: #ff0000;
+}
+
+.countdown .main-task {
+    padding: 1.8rem 0;
+    word-wrap: break-word;
+}
+
+@media (max-width: 600px) {
+    .countdown {
+        width: 100%;
+    }
+
+    .countdown .counter .label {
+        font-size: 0.8em;
+    }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+    .countdown {
+        width: calc(100% - 40px);
+    }
+
+    .countdown .counter .value,
+    .countdown .counter strong {
+        font-size: 12vw;
+    }
+
+}
+
+@media screen and (max-width: 375px) {
+    .countdown .counter {
+        flex-direction: column;
+    }
+
+    .countdown .counter .label {
+        font-size: 1em;
+    }
+
+    .countdown .counter strong {
+        display: none;
+    }
+
+    .wrapper {
+        width: 100%;
+        margin: 0;
+    }
+
+    .login{
+        height: 100vh;
+    }
+}
+
+@media (min-width: 1025px) {
+    .countdown {
+        width: calc(100% - 50px);
+    }
+
+    .countdown .counter .value,
+    .countdown .counter strong {
+        font-size: 9vw;
+    }
+}
