@@ -3,7 +3,7 @@
 // Por favor, leia o arquivo LICENSE na raiz do projeto
 // Para contribuições, visite https://github.com/Lizzyman04/agenda
 
-import createNotifications from './notifications';
+import { createNotifications } from './notifications';
 
 const openDB = () => {
   return new Promise((resolve, reject) => {
@@ -59,7 +59,19 @@ const addTask = async (task) => {
     taskRequest.onsuccess = () => {
       const taskId = taskRequest.result;
       const notifications = createNotifications(task.createdAt, task.deadline, task.importance, taskId);
-      notifications.forEach(notification => notificationStore.add(notification));
+
+      notifications.forEach(notification => {
+        const notificationRequest = notificationStore.add({ ...notification, taskId });
+
+        notificationRequest.onsuccess = () => {
+          console.log('Notification added:', notification);
+        };
+
+        notificationRequest.onerror = (event) => {
+          console.error('Error adding notification:', event.target.errorCode);
+        };
+      });
+
       resolve(taskId);
     };
 
@@ -194,7 +206,6 @@ const saveSettings = async (settings) => {
   });
 };
 
-
 const getSettings = async (id) => {
   const db = await openDB();
   return new Promise((resolve, reject) => {
@@ -211,5 +222,40 @@ const getSettings = async (id) => {
     };
   });
 };
+
+const removeExpiredNotifications = async () => {
+  const db = await openDB();
+  const transaction = db.transaction(['notifications'], 'readwrite');
+  const notificationStore = transaction.objectStore('notifications');
+  const now = new Date().toISOString();
+
+  return new Promise((resolve, reject) => {
+    const request = notificationStore.openCursor();
+
+    request.onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (cursor) {
+        if (cursor.value.sendDate < now) {
+          cursor.delete();
+        }
+        cursor.continue();
+      } else {
+        resolve();
+      }
+    };
+
+    request.onerror = (event) => {
+      reject('Error removing expired notifications:', event.target.errorCode);
+    };
+  });
+};
+
+const scheduleExpiredNotificationsCleanup = () => {
+  setInterval(() => {
+    removeExpiredNotifications().catch(console.error);
+  }, 86400000);
+};
+
+scheduleExpiredNotificationsCleanup();
 
 export { addTask, editTask, removeTask, getTask, saveSettings, getSettings, getNotifications };

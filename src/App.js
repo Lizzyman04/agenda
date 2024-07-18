@@ -6,6 +6,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from './components/header';
 import Footer from './components/footer';
+import Utils from './components/utils';
 import { getSettings } from './indexedDB';
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [inputPassword, setInputPassword] = useState('');
   const [error, setError] = useState('');
+  const [activeButton, setActiveButton] = useState(null);
 
   useEffect(() => {
     const checkPassword = async () => {
@@ -37,6 +39,10 @@ const App = () => {
     } else {
       setError('Senha incorreta');
     }
+  };
+
+  const handleSelect = (button) => {
+    setActiveButton(button);
   };
 
   if (passwordExists && !authenticated) {
@@ -66,6 +72,7 @@ const App = () => {
   return (
     <div>
       <Header />
+      <Utils activeButton={activeButton} onSelect={handleSelect} />
       <Footer />
     </div>
   );

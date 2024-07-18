@@ -8,6 +8,7 @@ footer {
 }
 
 .settings-btn,
+.notifications-btn,
 footer a {
     background: transparent;
     text-decoration: underline;
@@ -20,7 +21,8 @@ footer > p {
     margin-top: 12px;
 }
 
-.settings-btn {
+.settings-btn,
+.notifications-btn {
     font-size: 1rem;
     margin: 0.25rem;
 }

@@ -11,6 +11,7 @@ const Footer = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
+  const [notificationsEnabled, setNotificationsEnabled] = useState(Notification.permission === 'granted');
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
@@ -32,12 +33,21 @@ const Footer = () => {
     setIsEditing(false);
   };
 
+  const requestNotificationPermission = async () => {
+    const permission = await Notification.requestPermission();
+    if (permission === 'granted') {
+      setNotificationsEnabled(true);
+    } else if (permission === 'denied') {
+      window.location.href = '/termos-de-uso/#notificacoes';
+    }
+  };
+
   return (
     <footer className="footer">
       <p>{settings && settings.name ? `Olá, ${settings.name}` : 'Usuário Anônimo'} |
-      <button className="settings-btn" onClick={() => setIsEditing(!isEditing)}>
-        {settings ? 'Alterar Configurações' : 'Adicionar Definições'}
-      </button>
+        <button className="settings-btn" onClick={() => setIsEditing(!isEditing)}>
+          {settings ? 'Alterar Configurações' : 'Adicionar Definições'}
+        </button>
       </p>
       <div className={`settings ${isEditing ? 'show' : ''}`}>
         <button className="close" onClick={() => setIsEditing(false)}>X</button>
@@ -55,6 +65,16 @@ const Footer = () => {
         />
         <button className='submit' onClick={handleSave}>Salvar</button>
       </div>
+      <p>
+        <a href="/termos-de-uso/#armazenamento-dados">Onde são armazenados os meus dados?</a>
+        {!notificationsEnabled ? (
+          <>
+            {' | '}
+            <button className="notifications-btn" onClick={requestNotificationPermission}>
+              Ative as Notificações </button>
+          </>
+        ) : null}
+      </p>
       <p>
         <a href="https://tudocomlizzyman.com" target='_blank'>Tudo com Lizzyman</a> &copy; {currentYear}
       </p>

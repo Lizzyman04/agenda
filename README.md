@@ -1,23 +1,25 @@
-# Agenda, a task wait you
+# AGENDA - Uma tarefa espera por você!
 
-Este é um aplicativo web e móvel para gerenciar tarefas, desenvolvido usando React e React Native. Ele permite aos usuários gerenciar tarefas, adicionar datas, graus de importância e urgência, utilizando métodos como TABELA DE TAREFAS, regra 1 - 3 - 5, e MATRIZ DE EISENHOWER.
+Este é um aplicativo web para gerenciar tarefas, desenvolvido usando React.
 
-## Funcionalidades
+### Diferencial
 
-- Gerenciamento de tarefas
-- Adição de datas
+- Armazenamento local dos dados
+- Notificação e lembretes constantes
+- Funciona offline após o primeiro acesso
 - Priorização de tarefas por importância e urgência
-- Funciona offline após o primeiro acesso (Actualmente configurado para expirar em 30 dias)
 
-## Tecnologias Utilizadas
+Veja mais em: [Termos de Uso](https://agenda.tudocomlizzyman.com/termos-de-uso)
+
+### Tecnologias & Plugins
 
 - React
-- React Native
-- IndexedDB para armazenamento local
+- Service Worker
+- IndexedDB (Client Storage)
 
-## Como Contribuir
+## Como Contribuir?
 
-As contribuições são bem-vindas! Para contribuir, siga os seguintes passos:
+As [contribuições](/CONTRIBUTORS.md) são bem-vindas! Para contribuir:
 
 1. Fork o repositório
 2. Crie uma branch para sua feature (`git checkout -b feature/nome-da-feature`)
@@ -27,7 +29,14 @@ As contribuições são bem-vindas! Para contribuir, siga os seguintes passos:
 
 ## Outras Informações
 
-Este projeto é licenciado sob os termos descritos no arquivo LICENSE.
+Este projeto é licenciado sob os termos descritos no arquivo (LICENSE)[/LICENSE].
+
+Este projeto foi realizado graças à valiosas [contribuições](/CONTRIBUTORS.md). Sem estes apoios, este projeto não teria sido possível.
+
+Feito com ❤️ usando React.
+
+Repositório: [github.com/Lizzyman04/agenda](https://github.com/Lizzyman04/agenda).
 
 Email: [admin@tudocomlizzyman.com](mailto:admin@tudocomlizzyman.com)
-Repositório: [github.com/Lizzyman04/agenda](https://github.com/Lizzyman04/agenda).
+
+Website: [Agenda - Uma tarefa espera por você!](https://agenda.tudocomlizzyman.com/)

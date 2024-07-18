@@ -1,0 +1,127 @@
+[
+  {
+    "title": "Ei, ocupado?",
+    "left_desc": "Ei, você se lembra da tarefa",
+    "right_desc": "que você agendou? Que tal dar uma olhada nela agora? Pode ser um ótimo momento para começar!"
+  },
+  {
+    "title": "Vamos lá!",
+    "left_desc": "Está pronto para encarar a tarefa",
+    "right_desc": "? Você agendou para hoje, então que tal começar e riscar isso da sua lista?"
+  },
+  {
+    "title": "Um tempinho?",
+    "left_desc": "Olá! Só para lembrar, você marcou para fazer",
+    "right_desc": ". Se não estiver ocupado agora, seria uma ótima oportunidade para concluí-la!"
+  },
+  {
+    "title": "Hora de agir!",
+    "left_desc": "Vamos lá! A tarefa",
+    "right_desc": "está esperando por você. É o momento perfeito para mostrar suas habilidades e completá-la."
+  },
+  {
+    "title": "Lembrete rápido",
+    "left_desc": "Ei! Lembra daquela tarefa",
+    "right_desc": "que você planejou? Se tiver um tempinho livre, pode ser bom adiantar isso agora."
+  },
+  {
+    "title": "Que tal agora?",
+    "left_desc": "Ei, que tal aproveitar o momento para dar uma olhada na tarefa",
+    "right_desc": "? Você agendou para hoje!"
+  },
+  {
+    "title": "Vamos fazer?",
+    "left_desc": "Hey! Lembra da tarefa",
+    "right_desc": "? Talvez seja uma boa hora para começar."
+  },
+  {
+    "title": "Quase lá!",
+    "left_desc": "Você está quase lá! Só falta a tarefa",
+    "right_desc": ". Vamos fazer isso juntos?"
+  },
+  {
+    "title": "Minutinho?",
+    "left_desc": "Tem um minutinho? Que tal começar a tarefa",
+    "right_desc": "que você agendou?"
+  },
+  {
+    "title": "Vamos avançar?",
+    "left_desc": "Lembre-se, você marcou para fazer a tarefa",
+    "right_desc": "hoje. Vamos avançar nisso?"
+  },
+  {
+    "title": "Lembrete amigo",
+    "left_desc": "Só um toque amigável para lembrar da tarefa",
+    "right_desc": ". Pode ser uma boa ideia dar início a ela agora."
+  },
+  {
+    "title": "Você arrasa!",
+    "left_desc": "Você está arrasando! Agora é hora de encarar a tarefa",
+    "right_desc": ". Vamos nessa?"
+  },
+  {
+    "title": "Por aqui?",
+    "left_desc": "Ei, já que está por aqui, que tal trabalhar na tarefa",
+    "right_desc": "?"
+  },
+  {
+    "title": "Boa ideia!",
+    "left_desc": "Lembra daquela tarefa",
+    "right_desc": "que você planejou? Pode ser um bom momento para começar."
+  },
+  {
+    "title": "Mantenha o ritmo!",
+    "left_desc": "Vamos manter o ritmo! Que tal dar uma olhada na tarefa",
+    "right_desc": "agora?"
+  },
+  {
+    "title": "Você consegue!",
+    "left_desc": "Você está indo muito bem! Vamos finalizar a tarefa",
+    "right_desc": "?"
+  },
+  {
+    "title": "Mais uma!",
+    "left_desc": "Pronto para mais uma? A tarefa",
+    "right_desc": "está esperando por você!"
+  },
+  {
+    "title": "Rápido lembrete",
+    "left_desc": "Ei, só um lembrete rápido sobre a tarefa",
+    "right_desc": ". Que tal começar agora?"
+  },
+  {
+    "title": "Produtividade!",
+    "left_desc": "Que tal ser produtivo agora? A tarefa",
+    "right_desc": "pode ser concluída em breve!"
+  },
+  {
+    "title": "Não esqueça!",
+    "left_desc": "Só para não esquecer, você agendou a tarefa",
+    "right_desc": ". Pode ser uma boa ideia começar!"
+  },
+  {
+    "title": "Hora de brilhar!",
+    "left_desc": "Vamos lá! A tarefa",
+    "right_desc": "está te esperando. Hora de arregaçar as mangas!"
+  },
+  {
+    "title": "Hora de começar!",
+    "left_desc": "Lembra da tarefa",
+    "right_desc": "que você colocou no seu calendário? Talvez seja hora de começar."
+  },
+  {
+    "title": "Dedique um tempo",
+    "left_desc": "Que tal dedicar um tempinho para a tarefa",
+    "right_desc": "? Você consegue!"
+  },
+  {
+    "title": "Está livre?",
+    "left_desc": "Ei, você marcou de fazer",
+    "right_desc": "agora. Está com tempo livre para isso?"
+  },
+  {
+    "title": "Lembrete atencioso",
+    "left_desc": "Só um toque para lembrar da tarefa",
+    "right_desc": ". Se tiver um momento, pode ser bom adiantar."
+  }
+]

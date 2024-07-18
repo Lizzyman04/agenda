@@ -6,6 +6,7 @@
 import { precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate, CacheFirst } from 'workbox-strategies';
+import { ExpirationPlugin } from 'workbox-expiration';
 
 precacheAndRoute(self.__WB_MANIFEST);
 
@@ -31,8 +32,19 @@ registerRoute(
     plugins: [
       new ExpirationPlugin({
         maxEntries: 50,
-        maxAgeSeconds: 30 * 24 * 60 * 60,
+        maxAgeSeconds: 90 * 24 * 60 * 60,
       }),
     ],
   })
 );
+
+self.addEventListener('push', event => {
+    const data = event.data.json();
+    const options = {
+      body: data.body,
+      icon: '/assets/img/agenda-logo.png',
+    };
+    event.waitUntil(
+      self.registration.showNotification(data.title, options)
+    );
+});

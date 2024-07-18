@@ -112,3 +112,39 @@
         font-size: 9vw;
     }
 }
+
+blockquote {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #555;
+    padding: 20px 40px;
+    margin: 20px 0;
+    border-left: 5px solid #4ba7ea;
+    position: relative;
+  }
+  
+  blockquote p {
+    margin: 0;
+    padding: 0;
+  }
+  
+  blockquote b {
+    font-weight: bold;
+    color: #333;
+  }
+  
+  @media (max-width: 768px) {
+    blockquote {
+      padding: 15px 30px;
+      font-size: 1.2rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    blockquote {
+      padding: 10px 20px;
+      font-size: 1rem;
+    }
+  }
+  

@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #888888c5;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background-color: #f1f1f1;
+}
+
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background: #ffffff;
+    color: #0f0f0f;
+    padding: 2.5rem;
+}
+
+a {
+    color: #1e90ff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+header {
+    text-align: center;
+}
+
+header .logo {
+    width: 96%;
+    max-width: 480px;
+    margin-bottom: 1rem;
+}
+
+nav ul {
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    text-align: left;
+}
+
+nav ul li {
+    margin: 0.5rem 0;
+}
+
+header,
+main,
+footer {
+    max-width: 876px;
+    margin: 2rem auto;
+}
+
+section * {
+    font-size: 18.5px;
+    line-height: 2;
+    margin-bottom: 1rem;
+}
+
+@media screen and (max-width: 576px) {
+    section * {
+        font-size: 16.5px;
+    }
+
+    body {
+        padding: 1.5rem;
+    }
+}
+
+section h1 {
+    font-size: 28px;
+}
+
+section h2 {
+    font-size: 24px;
+}
+
+section ul,
+section ol {
+    margin-bottom: 16px;
+    padding-left: 28px;
+}
+
+section li {
+    padding-left: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 0;
+}
+
+section ul li::marker {
+    content: "\2713";
+}
+
+#notificacoes a {
+    font-size: 14px;
+}
+
+footer {
+    text-align: center;
+    line-height: 2;
+}
