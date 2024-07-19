@@ -3,18 +3,31 @@
 // Por favor, leia o arquivo LICENSE na raiz do projeto
 // Para contribuições, visite https://github.com/Lizzyman04/agenda
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { getPhrase } from '../phrases/getPhrase';
+
 import TaskTable from './task/TaskTable';
 import OneThreeFive from './task/OneThreeFive';
 import EisenhowerMatrix from './task/EisenhowerMatrix';
 import Add from './task/Add';
-import { getPhrase } from '../phrases/getPhrase';
+
 
 const Utils = ({ activeButton, onSelect }) => {
+  const [phrase, setPhrase] = useState('');
+
+  useEffect(() => {
+    const fetchPhrase = async () => {
+      const result = await getPhrase();
+      setPhrase(result);
+    };
+
+    fetchPhrase();
+  }, []);
+
   return (
     <div className="container">
       <div className="motivational-phrase">
-        <blockquote dangerouslySetInnerHTML={{ __html: getPhrase() }}></blockquote>
+        <blockquote dangerouslySetInnerHTML={{ __html: phrase }}></blockquote>
       </div>
       <div className={`utils ${activeButton ? 'u-up' : ''}`}>
         {(activeButton === null || activeButton === 'Add') && (

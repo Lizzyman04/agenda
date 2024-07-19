@@ -57,8 +57,23 @@ const scheduleNotification = (title, body, time) => {
 
     const requestPermission = () => {
         Notification.requestPermission().then(permission => {
-            if (permission === 'granted') scheduleNotification(title, body, time);
-            else console.error('Permissão para notificações não concedida.');
+            if (!localStorage.getItem('notificationPermissionGranted')) {
+                if (permission === 'granted') {
+                    localStorage.setItem('notificationPermissionGranted', 'true');
+                    alert('PERFEITO! Mantenha o navegador aberto para receber notificações.');
+                    scheduleNotification(title, body, time);
+                    scheduleNotification(
+                        'Lembrete: Navegador Em Segundo Plano',
+                        'Mantenha o navegador aberto para receber notificações da AGENDA. Se você fechar o navegador, é possível que não receba as notificações!',
+                        Date.now() + 90 * 1000
+                    );
+                } else {
+                    localStorage.setItem('notificationPermissionGranted', 'false');
+                    alert('Permita que a agenda lhe envie notificações para lembrar das suas tarefas.');
+                    console.error('Permissão para notificações não concedida.');
+                }
+            } else if (localStorage.getItem('notificationPermissionGranted') != "true") location.href = "/termos-de-uso/#notificacoes";
+
         });
     };
 
@@ -67,17 +82,18 @@ const scheduleNotification = (title, body, time) => {
     const now = Date.now();
     const delay = Math.max(time - now, 60 * 1000);
 
-    console.log('Delay (ms):', delay, 'Scheduled time:', new Date(now + delay).toString());
-
-    setTimeout(() => {
-        navigator.serviceWorker.ready.then(registration => {
-            registration.showNotification(title, {
-                body: body.replace(/<[^>]*>?/gm, ''),
-                icon: '/assets/img/agenda-logo.png',
-                tag: 'task-notification'
-            });
-        }).catch(console.error);
-    }, delay);
+    navigator.serviceWorker.ready.then(registration => {
+        const interval = setInterval(() => {
+            if (navigator.serviceWorker.controller) {
+                clearInterval(interval);
+                navigator.serviceWorker.controller?.postMessage({
+                    action: 'schedule-notification',
+                    title, body, delay
+                });
+                console.log('Notification:', title, ' was scheduled for:', new Date(now + delay).toString());
+            }
+        }, 100);
+    });
 };
 
 export { scheduleNotification, createNotifications };

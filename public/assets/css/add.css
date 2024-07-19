@@ -1,0 +1,138 @@
+.gtd-form,
+.add-task {
+    padding: 20px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.gtd-form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.question-section,
+.conclusion-section,
+.question-section h2,
+.method-description,
+.simple-form h3 {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin-bottom: 20px;
+    font-size: 18.5px;
+    line-height: 2;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 480px) {
+    .method-description {
+        font-size: 17px;
+        line-height: 1.5;
+        padding: 10px 20px;
+    }
+}
+
+.options,
+.date-input,
+.task-summary,
+.method-selection,
+.simple-form {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.text-input input,
+.date-input input,
+.input-field {
+    width: calc(100% - 22px);
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.button,
+.text-input button,
+.options button,
+.date-input button,
+.conclusion-section button,
+.method-selection button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin: 5px;
+}
+
+.button:hover,
+.text-input button:hover,
+.options button:hover,
+.date-input button:hover,
+.conclusion-section button:hover,
+.method-selection button:hover {
+    background-color: #0056b3;
+}
+
+.conclusion-section button {
+    margin: 12px;
+}
+
+.date-input .react-datepicker-wrapper {
+    width: 100%;
+}
+
+.conclusion-section p,
+.method-description p {
+    margin: 5px 0;
+}
+
+.method-description {
+    text-align:justify;
+}
+
+.method-description ol {
+    margin-bottom: 16px;
+    padding-left: 28px;
+}
+
+.method-description li {
+    padding-left: 20px;
+    padding-bottom: 10px;
+    margin-bottom: 0;
+}
+
+.method-selection {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.simple-form {
+    margin-top: 20px;
+}
+
+.error-m{
+    color: #ff0000;
+    font-size: 16px;
+}
+
+.date-input {
+    flex-direction: column;
+}
+
+.cancel-button {
+    background-color: #dc3545 !important;
+}
+
+.cancel-button:hover {
+    background-color: #c82333 !important;
+}

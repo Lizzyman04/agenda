@@ -76,7 +76,10 @@ const Footer = () => {
         ) : null}
       </p>
       <p>
-        <a href="https://tudocomlizzyman.com" target='_blank'>Tudo com Lizzyman</a> &copy; {currentYear}
+        Feito com ❤️ usando React.
+      </p>
+      <p>
+        {currentYear} &copy; <a href="https://tudocomlizzyman.com" target='_blank'>Tudo com Lizzyman</a>
       </p>
     </footer>
   );

@@ -21,10 +21,15 @@ module.exports = {
           loader: 'babel-loader',
         },
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader'],
+      },
     ],
   },
   plugins: [
     new WorkboxWebpackPlugin.GenerateSW({
+      swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
       runtimeCaching: [
@@ -52,6 +57,7 @@ module.exports = {
           },
         },
       ],
+      maximumFileSizeToCacheInBytes: 25 * 1024 * 1024,
     }),
   ],
   devServer: {

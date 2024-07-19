@@ -1,0 +1,85 @@
+{
+  "Q1": {
+    "question": "Qual é a tarefa?",
+    "answers": "text"
+  },
+  "Q2": {
+    "question": "Esta tarefa precisa realmente ser feita?",
+    "answers": {
+      "Não": {
+        "conclusion": "Tarefa irrelevante de ser adicionada à lista de tarefas."
+      },
+      "Sim": "Q3"
+    }
+  },
+  "Q3": {
+    "question": "Outra pessoa pode fazer essa tarefa por você?",
+    "answers": {
+      "Não": "Q6",
+      "Sim": {
+        "conclusion": "Delegue a tarefa, não precisa ser adicionada à sua lista de tarefas."
+      }
+    }
+  },
+  "Q6": {
+    "question": "Esta tarefa pode ser feita em menos de 10 minutos?",
+    "answers": {
+      "Não": "Q9",
+      "Sim": {
+        "conclusion": "Faça agora, não precisa adicioná-la à sua lista de tarefas."
+      }
+    }
+  },
+  "Q9": {
+    "question": "Esta tarefa é importante para seus objetivos e projetos?",
+    "answers": {
+      "Não": {
+        "conclusion": "Tarefa irrelevante de ser adicionada à lista de tarefas."
+      },
+      "Sim": "Q11"
+    }
+  },
+  "Q11": {
+    "question": "Qual a data limite para esta tarefa ser concluída?",
+    "answers": {
+      "Hoje mesmo!": "Q13",
+      "Esta semana!": "Q13",
+      "Próximos 20 dias!": "Q13",
+      "Este mês!": "Q13",
+      "Customizar": "Q13"
+    }
+  },
+  "Q13": {
+    "question": "Qual o impacto se esta tarefa não for concluída?",
+    "answers": {
+      "Impacto muito negativo, essa tarefa realmente precisa ser feita; o impacto será extremamente prejudicial.": {
+        "conclusion": {
+          "importante" : "5"
+        }
+      },
+      "Impacto negativo, objetivos importantes serão comprometidos; o impacto será considerável.": {
+        "conclusion": {
+          "importante" : "4"
+        }
+      },
+      "Impacto moderado, alguns objetivos serão comprometidos; o impacto será moderado.": {
+        "conclusion": {
+          "importante" : "3"
+        }
+      },
+      "Impacto leve, poucos objetivos serão comprometidos; o impacto será leve e facilmente remediável.": {
+        "conclusion": {
+          "importante" : "2"
+        }
+      },
+      "Impacto muito leve, provocará atrasos mínimos em outras tarefas; o impacto será muito leve.": {
+        "conclusion": {
+          "importante" : "1"
+        }
+      },
+      "Nenhum impacto, não haverá impacto; a conclusão da tarefa não é necessária.": {
+        "conclusion": "Tarefa irrelevante de ser adicionada à lista de tarefas."
+      }
+    }
+  }
+}

@@ -9,7 +9,7 @@ import App from './App';
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/service-worker.js').then(registration => {
+        navigator.serviceWorker.register('/sw.js').then(registration => {
             console.log('SW registrado com sucesso:', registration);
         }).catch(error => {
             console.log('Falha ao registrar o SW:', error);
