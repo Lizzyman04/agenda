@@ -174,8 +174,83 @@ body {
     }
 }
 
-@media (min-width: 576px) and (max-width: 992px){
+@media (min-width: 576px) and (max-width: 992px) {
     .utils button {
         width: calc(42% - 30px);
+    }
+}
+
+input[type="checkbox"] {
+    width: 100%;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background-color: #eee;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    position: relative;
+    outline: none;
+    transition: all 1s;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #0073ec;
+    border-color: #0073ec;
+}
+
+input[type="checkbox"]:checked::before {
+    content: '✓';
+    display: block;
+    color: white;
+    font-size: 14px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.toast {
+    visibility: hidden;
+    min-width: 250px;
+    background-color: rgb(255, 255, 255);
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    color: black;
+    text-align: center;
+    border-radius: 10px;
+    padding: 16px;
+    position: fixed;
+    z-index: 1;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 30px;
+    font-size: 16px;
+}
+
+.toast.show {
+    visibility: visible;
+    animation: fadein 0.5s, fadeout 0.5s 9.5s;
+}
+
+@keyframes fadein {
+    from {
+        bottom: 0;
+        opacity: 0;
+    }
+    to {
+        bottom: 30px;
+        opacity: 1;
+    }
+}
+
+@keyframes fadeout {
+    from {
+        bottom: 30px;
+        opacity: 1;
+    }
+    to {
+        bottom: 0;
+        opacity: 0;
     }
 }

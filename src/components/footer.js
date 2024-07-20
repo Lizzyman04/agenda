@@ -4,10 +4,11 @@
 // Para contribuições, visite https://github.com/Lizzyman04/agenda
 
 import React, { useState, useEffect } from 'react';
-import { getSettings, saveSettings } from '../indexedDB';
+import { saveSettings } from '../indexedDB';
+import { useSettings } from './context/SettingsContext';
 
 const Footer = () => {
-  const [settings, setSettings] = useState(null);
+  const { settings, setSettings } = useSettings();
   const [isEditing, setIsEditing] = useState(false);
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
@@ -15,19 +16,14 @@ const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   useEffect(() => {
-    const fetchSettings = async () => {
-      const settings = await getSettings(1);
-      setSettings(settings);
-      if (settings) {
-        setName(settings.name || '');
-        setPassword(settings.password || '');
-      }
-    };
-    fetchSettings();
-  }, []);
+    if (settings) {
+      setName(settings.name || '');
+      setPassword(settings.password || '');
+    }
+  }, [settings]);
 
   const handleSave = async () => {
-    const newSettings = { name, password };
+    const newSettings = { ...settings, name, password };
     await saveSettings(newSettings);
     setSettings(newSettings);
     setIsEditing(false);
@@ -71,7 +67,8 @@ const Footer = () => {
           <>
             {' | '}
             <button className="notifications-btn" onClick={requestNotificationPermission}>
-              Ative as Notificações </button>
+              Ative as Notificações
+            </button>
           </>
         ) : null}
       </p>

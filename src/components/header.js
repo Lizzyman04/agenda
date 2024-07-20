@@ -3,10 +3,12 @@
 // Por favor, leia o arquivo LICENSE na raiz do projeto
 // Para contribuições, visite https://github.com/Lizzyman04/agenda
 
-import React, { useState, useEffect } from 'react';
-import { getTask, getSettings } from '../indexedDB';
+import React, { useState, useEffect, useRef } from 'react';
+import { getTask } from '../indexedDB';
+import { useSettings } from './context/SettingsContext';
 
 const Header = () => {
+  const { settings } = useSettings();
   const [timeLeft, setTimeLeft] = useState({
     days: '000',
     hours: '00',
@@ -15,18 +17,28 @@ const Header = () => {
   });
   const [mainTask, setMainTask] = useState('');
   const [greeting, setGreeting] = useState('');
+  const timerRef = useRef(null);
 
   useEffect(() => {
+    if (!settings) return;
+
     const fetchMainTask = async () => {
-      const settings = await getSettings(1);
-      if (settings && settings.fixedTaskId) {
+      if (settings.fixedTaskId) {
         const task = await getTask(settings.fixedTaskId);
         if (task) {
           setMainTask(task.description);
           calculateAndSetTimeLeft(task.deadline);
         }
+      } else {
+        setMainTask('');
+        setTimeLeft({
+          days: '000',
+          hours: '00',
+          minutes: '00',
+          seconds: '00',
+        });
       }
-      setGreeting(getGreeting(settings && settings.name));
+      setGreeting(getGreeting(settings.name));
     };
 
     const calculateAndSetTimeLeft = (deadline) => {
@@ -60,24 +72,27 @@ const Header = () => {
         });
       };
 
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+      }
+
       updateCountdown();
-      const timer = setInterval(updateCountdown, 1000);
-      return () => clearInterval(timer);
+      timerRef.current = setInterval(updateCountdown, 1000);
     };
 
     fetchMainTask();
-  }, []);
+  }, [settings]);
 
   const getGreeting = (name) => {
     const hours = new Date().getHours();
     const timeOfDay = hours < 12 ? 'Bom dia' : hours < 18 ? 'Boa tarde' : 'Boa noite';
-    
+
     const dayOfWeek = new Intl.DateTimeFormat('pt-PT', { weekday: 'long' }).format(new Date());
     const preposition = ['sábado', 'domingo'].includes(dayOfWeek) ? 'neste' : 'nesta';
-  
+
     return `${timeOfDay}${name ? ` ${name}` : ''}, como está ${preposition} ${dayOfWeek}?`;
   };
-  
+
   const isTimeCritical = () => {
     return parseInt(timeLeft.days) === 0 && parseInt(timeLeft.hours) < 24;
   };

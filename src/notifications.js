@@ -50,6 +50,18 @@ const createNotifications = (createdAt, deadline, importance, task_desc) => {
     });
 };
 
+const showToast = (message) => {
+    const toastMessage = document.querySelector("#toast-message");
+    const toast = document.querySelector(".toast");
+
+    toastMessage.textContent = message;
+    toast.classList.add("show");
+
+    setTimeout(() => {
+        toast.classList.remove("show");
+    }, 10000);
+}
+
 const scheduleNotification = (title, body, time) => {
     if (!('Notification' in window)) {
         return console.error('Este navegador não suporta notificações.');
@@ -60,7 +72,7 @@ const scheduleNotification = (title, body, time) => {
             if (!localStorage.getItem('notificationPermissionGranted')) {
                 if (permission === 'granted') {
                     localStorage.setItem('notificationPermissionGranted', 'true');
-                    alert('PERFEITO! Mantenha o navegador aberto para receber notificações.');
+                    showToast('PERFEITO! Mantenha o navegador aberto para receber notificações.');
                     scheduleNotification(title, body, time);
                     scheduleNotification(
                         'Lembrete: Navegador Em Segundo Plano',
@@ -69,11 +81,12 @@ const scheduleNotification = (title, body, time) => {
                     );
                 } else {
                     localStorage.setItem('notificationPermissionGranted', 'false');
-                    alert('Permita que a agenda lhe envie notificações para lembrar das suas tarefas.');
+                    showToast('Permita que a agenda lhe envie notificações para lembrar das suas tarefas.');
                     console.error('Permissão para notificações não concedida.');
                 }
-            } else if (localStorage.getItem('notificationPermissionGranted') != "true") location.href = "/termos-de-uso/#notificacoes";
-
+            } else if (localStorage.getItem('notificationPermissionGranted') != "true") {
+                location.href = "/termos-de-uso/#notificacoes";
+            }
         });
     };
 

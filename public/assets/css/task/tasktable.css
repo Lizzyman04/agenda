@@ -1,0 +1,161 @@
+/* Estilos para a tabela de tarefas */
+table.task-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table.task-table td {
+    border: 1px solid #ddd;
+    text-align: center;
+    padding: 8px;
+}
+
+table.task-table th {
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    padding: 24px 8px;
+}
+
+table.task-table td.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+table.task-table td.task-name {
+    text-align: left;
+}
+
+.actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 5px;
+    transition: transform 0.2s, background-color 0.2s;
+}
+
+.actions button:hover {
+    transform: scale(1.1);
+    background-color: #f2f2f2;
+    border-radius: 4px;
+}
+
+.task-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.mobile-select,
+.mobile-selected {
+    display: none;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.mobile-select select {
+    width: 100%;
+    padding: 8px;
+    display: block;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.mobile-selected .actions {
+    margin-top: 10px;
+}
+
+.mobile-selected .actions button {
+    margin-right: 5px;
+}
+
+.mobile-selected p {
+    margin: 8px 0;
+}
+
+.mobile-selected .actions {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.mobile-selected .actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin-right: 5px;
+    transition: transform 0.2s;
+}
+
+.mobile-selected .actions button:hover {
+    transform: scale(1.1);
+    border-radius: 4px;
+}
+
+.mobile-selected .task-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+label.task-status {
+    margin-top: 24px;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #333;
+    cursor: pointer;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+label.task-status input[type="checkbox"] {
+    accent-color: #007bff;
+    width: 18px;
+    height: 18px;
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+label.task-status.completed {
+    color: #28a745;
+}
+
+label.task-status.not-completed {
+    color: #dc3545;
+}
+
+
+
+@media (max-width: 625px) {
+    table.task-table {
+        display: none;
+    }
+
+    .mobile-select,
+    .mobile-selected {
+        display: block;
+    }
+}
+
+@media (min-width: 626px) {
+
+    .mobile-select,
+    .mobile-selected {
+        display: none;
+    }
+
+    table.task-table {
+        display: table;
+    }
+}

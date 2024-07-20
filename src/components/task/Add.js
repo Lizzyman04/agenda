@@ -2,6 +2,7 @@
 // Este software contém restrições!
 // Por favor, leia o arquivo LICENSE na raiz do projeto
 // Para contribuições, visite https://github.com/Lizzyman04/agenda
+
 import React, { useState } from 'react';
 import GTDForm from './GTDForm';
 import { addTask } from '../../indexedDB';
@@ -16,13 +17,14 @@ const Add = () => {
   const [deadline, setDeadline] = useState(null);
   const [importance, setImportance] = useState(3);
   const [errorMessage, setErrorMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
   const handleSimpleSubmit = () => {
     if (validateForm()) {
       const task = {
         description,
         deadline,
-        importance
+        importance,
       };
       addTask(task);
       setDescription('');
@@ -30,6 +32,7 @@ const Add = () => {
       setImportance(3);
       setMethod(null);
       setErrorMessage('');
+      setSuccessMessage(`Tarefa "${task.description}" adicionada com sucesso!`);
     } else {
       setErrorMessage('Por favor, preencha todos os campos antes de adicionar a tarefa.');
     }
@@ -52,25 +55,30 @@ const Add = () => {
   return (
     <div className="add-task">
       {!method ? (
-        <div>
-          <div className="method-description">
-            <p>Escolha um método para adicionar sua tarefa:</p>
-            <ol>
-              <li>
-                <p><strong>Adicionar Tarefa (Simples):</strong> Insira as informações básicas da tarefa (nome, prazo e importância). Este método é rápido e direto, perfeito para adicionar tarefas rapidamente sem muita organização.</p>
-              </li>
-              <li>
-                <p><strong>GTD (Getting Things Done):</strong> Avalie se a tarefa precisa ser feita e determine sua urgência. Este método sistemático aumenta a produtividade ao organizar tarefas e compromissos de forma eficiente, seguindo os passos de capturar, esclarecer, organizar, refletir e executar.</p>
-              </li>
-            </ol>
-          </div>
+        <div className="method-description">
+          {successMessage ? (
+            <p className="success-m">{successMessage}</p>
+          ) : (
+            <>
+              <p>Escolha um método para adicionar sua tarefa:</p>
+              <ol>
+                <li>
+                  <p><strong>Adicionar Tarefa (Simples):</strong> Insira as informações básicas da tarefa (nome, prazo e importância). Este método é rápido e direto, perfeito para adicionar tarefas rapidamente sem muita organização.</p>
+                </li>
+                <li>
+                  <p><strong>GTD (Getting Things Done):</strong> Avalie se a tarefa precisa ser feita e determine sua urgência. Este método sistemático aumenta a produtividade ao organizar tarefas e compromissos de forma eficiente, seguindo os passos de capturar, esclarecer, organizar, refletir e executar.</p>
+                </li>
+              </ol>
+            </>
+          )}
           <div className="method-selection">
             <button onClick={() => setMethod('Simple')}>Adicionar Tarefa</button>
             <button onClick={() => setMethod('GTD')}>GTD (Getting Things Done)</button>
           </div>
+
         </div>
       ) : method === 'GTD' ? (
-        <GTDForm addTask={addTask} onClose={handleClose} />
+        <GTDForm addTask={addTask} onClose={handleClose} setSuccessMessage={setSuccessMessage} />
       ) : (
         <div className="simple-form">
           <input

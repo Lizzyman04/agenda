@@ -28,35 +28,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new WorkboxWebpackPlugin.GenerateSW({
+    new WorkboxWebpackPlugin.InjectManifest({
+      swSrc: './src/sw.js',
       swDest: 'sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
-      runtimeCaching: [
-        {
-          urlPattern: ({ request }) => request.destination === 'document',
-          handler: 'StaleWhileRevalidate',
-        },
-        {
-          urlPattern: ({ request }) => request.destination === 'script',
-          handler: 'StaleWhileRevalidate',
-        },
-        {
-          urlPattern: ({ request }) => request.destination === 'style',
-          handler: 'StaleWhileRevalidate',
-        },
-        {
-          urlPattern: ({ request }) => request.destination === 'image',
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'images',
-            expiration: {
-              maxEntries: 50,
-              maxAgeSeconds: 90 * 24 * 60 * 60,
-            },
-          },
-        },
-      ],
       maximumFileSizeToCacheInBytes: 25 * 1024 * 1024,
     }),
   ],

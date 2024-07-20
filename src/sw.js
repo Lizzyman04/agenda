@@ -1,33 +1,37 @@
 // Copyright (C) 2024 Arlindo Abdul
-// Este software contém restrições.
-// Por favor, leia o arquivo LICENSE na raiz do projeto.
+// Este software contém restrições!
+// Por favor, leia o arquivo LICENSE na raiz do projeto
 // Para contribuições, visite https://github.com/Lizzyman04/agenda
 
-importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.1.5/workbox-sw.js');
+import { precacheAndRoute } from 'workbox-precaching';
+import { registerRoute } from 'workbox-routing';
+import { StaleWhileRevalidate } from 'workbox-strategies';
+import { CacheFirst } from 'workbox-strategies';
+import { ExpirationPlugin } from 'workbox-expiration';
 
-workbox.precaching.precacheAndRoute(self.__WB_MANIFEST || []);
+precacheAndRoute(self.__WB_MANIFEST || []);
 
-workbox.routing.registerRoute(
+registerRoute(
   ({ request }) => request.destination === 'document',
-  new workbox.strategies.StaleWhileRevalidate()
+  new StaleWhileRevalidate()
 );
 
-workbox.routing.registerRoute(
+registerRoute(
   ({ request }) => request.destination === 'script',
-  new workbox.strategies.StaleWhileRevalidate()
+  new StaleWhileRevalidate()
 );
 
-workbox.routing.registerRoute(
+registerRoute(
   ({ request }) => request.destination === 'style',
-  new workbox.strategies.StaleWhileRevalidate()
+  new StaleWhileRevalidate()
 );
 
-workbox.routing.registerRoute(
+registerRoute(
   ({ request }) => request.destination === 'image',
-  new workbox.strategies.CacheFirst({
+  new CacheFirst({
     cacheName: 'images',
     plugins: [
-      new workbox.expiration.ExpirationPlugin({
+      new ExpirationPlugin({
         maxEntries: 50,
         maxAgeSeconds: 90 * 24 * 60 * 60,
       }),
@@ -65,7 +69,6 @@ self.addEventListener('message', event => {
       self.registration.showNotification(title, {
         body: body.replace(/<[^>]*>?/gm, ''),
         icon: '/assets/img/agenda-logo.png',
-        tag: 'task-notification'
       });
     }, delay);
   }

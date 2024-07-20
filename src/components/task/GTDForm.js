@@ -15,7 +15,7 @@ import gtdData from '../../phrases/gtd.json';
 
 registerLocale('pt', pt);
 
-const GTDForm = ({ addTask, onClose }) => {
+const GTDForm = ({ addTask, onClose, setSuccessMessage }) => {
     const [currentQuestion, setCurrentQuestion] = useState('Q1');
     const [answers, setAnswers] = useState({});
     const [customDate, setCustomDate] = useState(null);
@@ -95,6 +95,7 @@ const GTDForm = ({ addTask, onClose }) => {
             };
             console.log(task);
             addTask(task);
+            setSuccessMessage(`Tarefa "${task.description}" adicionada com sucesso!`);
         }
         setCurrentQuestion('Q1');
         setAnswers({});

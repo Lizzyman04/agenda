@@ -58,10 +58,10 @@ const addTask = async (task) => {
 
     taskRequest.onsuccess = () => {
       const taskId = taskRequest.result;
-      const notifications = createNotifications(task.createdAt, task.deadline, task.importance, taskId);
+      const notifications = createNotifications(task.createdAt, task.deadline, task.importance,  task.description);
 
       notifications.forEach(notification => {
-        const notificationRequest = notificationStore.add({ ...notification, taskId });
+        const notificationRequest = notificationStore.add({ ...notification, taskId: taskRequest.result });
 
         notificationRequest.onsuccess = () => {
           console.log('Notification added:', notification);
@@ -122,9 +122,10 @@ const editTask = async (task) => {
 
 const removeTask = async (id) => {
   const db = await openDB();
-  const transaction = db.transaction(['tasks', 'notifications'], 'readwrite');
+  const transaction = db.transaction(['tasks', 'notifications', 'settings'], 'readwrite');
   const taskStore = transaction.objectStore('tasks');
   const notificationStore = transaction.objectStore('notifications');
+  const settingsStore = transaction.objectStore('settings');
 
   return new Promise((resolve, reject) => {
     const taskRequest = taskStore.delete(id);
@@ -140,7 +141,32 @@ const removeTask = async (id) => {
           cursor.delete();
           cursor.continue();
         } else {
-          resolve(id);
+          const settingsIndex = settingsStore.index('fixedTaskId');
+          const settingsRange = IDBKeyRange.only(id);
+          const settingsRequest = settingsIndex.openCursor(settingsRange);
+
+          settingsRequest.onsuccess = (event) => {
+            const settingsCursor = event.target.result;
+            if (settingsCursor) {
+              const settingsRecord = settingsCursor.value;
+              settingsRecord.fixedTaskId = "";
+              const updateRequest = settingsCursor.update(settingsRecord);
+
+              updateRequest.onsuccess = () => {
+                resolve(id);
+              };
+
+              updateRequest.onerror = (event) => {
+                reject('Error updating settings:', event.target.errorCode);
+              };
+            } else {
+              resolve(id);
+            }
+          };
+
+          settingsRequest.onerror = (event) => {
+            reject('Error querying settings:', event.target.errorCode);
+          };
         }
       };
 
@@ -155,11 +181,44 @@ const removeTask = async (id) => {
   });
 };
 
+
 const getTask = async (id) => {
   const db = await openDB();
   const transaction = db.transaction(['tasks'], 'readonly');
   const taskStore = transaction.objectStore('tasks');
-  return taskStore.get(id);
+  const request = taskStore.get(id);
+
+  return new Promise((resolve, reject) => {
+    request.onsuccess = (event) => {
+      resolve(event.target.result);
+    };
+    request.onerror = (event) => {
+      reject(event.target.error);
+    };
+  });
+};
+
+const getTasks = async () => {
+  const db = await openDB();
+  const transaction = db.transaction(['tasks'], 'readonly');
+  const taskStore = transaction.objectStore('tasks');
+  const tasks = [];
+
+  removeExpiredNotifications().catch(console.error);
+
+  return new Promise((resolve, reject) => {
+    const request = taskStore.openCursor();
+    request.onsuccess = (event) => {
+      const cursor = event.target.result;
+      if (cursor) {
+        tasks.push(cursor.value);
+        cursor.continue();
+      } else {
+        resolve(tasks);
+      }
+    };
+    request.onerror = () => reject('Error fetching tasks');
+  });
 };
 
 const getNotifications = async (taskId) => {
@@ -250,12 +309,4 @@ const removeExpiredNotifications = async () => {
   });
 };
 
-const scheduleExpiredNotificationsCleanup = () => {
-  setInterval(() => {
-    removeExpiredNotifications().catch(console.error);
-  }, 86400000);
-};
-
-scheduleExpiredNotificationsCleanup();
-
-export { addTask, editTask, removeTask, getTask, saveSettings, getSettings, getNotifications };
+export { addTask, editTask, removeTask, getTask, getTasks, saveSettings, getSettings, getNotifications };
