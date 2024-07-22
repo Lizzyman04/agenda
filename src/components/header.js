@@ -37,6 +37,9 @@ const Header = () => {
           minutes: '00',
           seconds: '00',
         });
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+        }
       }
       setGreeting(getGreeting(settings.name));
     };

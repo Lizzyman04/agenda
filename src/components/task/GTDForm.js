@@ -9,16 +9,19 @@ import 'react-datepicker/dist/react-datepicker.css';
 import pt from 'date-fns/locale/pt';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
-import { endOfWeek, endOfMonth, setHours, setMinutes } from 'date-fns';
+import { endOfWeek, endOfMonth, setHours, setMinutes, setSeconds, setMilliseconds, isToday, isBefore, addHours, addMinutes } from 'date-fns';
 
 import gtdData from '../../phrases/gtd.json';
 
 registerLocale('pt', pt);
 
 const GTDForm = ({ addTask, onClose, setSuccessMessage }) => {
+
+    const getNextThreeHours = () => setMinutes(setSeconds(setMilliseconds(addHours(new Date(), 3), 0), 0), 0);
+
     const [currentQuestion, setCurrentQuestion] = useState('Q1');
     const [answers, setAnswers] = useState({});
-    const [customDate, setCustomDate] = useState(null);
+    const [customDate, setCustomDate] = useState(getNextThreeHours());
     const [textAnswer, setTextAnswer] = useState('');
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
@@ -46,6 +49,12 @@ const GTDForm = ({ addTask, onClose, setSuccessMessage }) => {
             setErrorMessage('Por favor, selecione uma data.');
             return;
         }
+
+        if (isBefore(customDate, addMinutes(new Date(), 10))) {
+            setErrorMessage('Data inválida: o prazo deve ser pelo menos 10 minutos no futuro.');
+            return;
+        }
+
         setAnswers({ ...answers, [currentQuestion]: customDate });
         setCurrentQuestion('Q13');
         setShowDatePicker(false);
@@ -85,6 +94,11 @@ const GTDForm = ({ addTask, onClose, setSuccessMessage }) => {
 
     const currentData = gtdData[currentQuestion];
     const conclusion = answers.conclusion;
+
+    const today = new Date();
+    const minDate = today;
+    const minTime = isToday(customDate) ? addMinutes(today, 10) : null;
+    const maxTime = isToday(customDate) ? setHours(setMinutes(today, 59), 23) : null;
 
     const handleTaskSubmit = (confirmed) => {
         if (confirmed) {
@@ -128,9 +142,9 @@ const GTDForm = ({ addTask, onClose, setSuccessMessage }) => {
                                 timeIntervals={15}
                                 dateFormat="Pp"
                                 locale="pt"
-                                minDate={new Date()}
-                                minTime={setMinutes(new Date(), new Date().getMinutes() + 10)}
-                                maxTime={setHours(setMinutes(new Date(), 59), 23)}
+                                minDate={minDate}
+                                minTime={minTime}
+                                maxTime={maxTime}
                                 placeholderText="Selecione a data e a hora"
                             />
                             {errorMessage && <p className="error-m">{errorMessage}</p>}

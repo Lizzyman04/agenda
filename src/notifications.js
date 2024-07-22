@@ -64,6 +64,7 @@ const showToast = (message) => {
 
 const scheduleNotification = (title, body, time) => {
     if (!('Notification' in window)) {
+        showToast('Este navegador não suporta notificações.');
         return console.error('Este navegador não suporta notificações.');
     }
 
@@ -77,7 +78,7 @@ const scheduleNotification = (title, body, time) => {
                     scheduleNotification(
                         'Lembrete: Navegador Em Segundo Plano',
                         'Mantenha o navegador aberto para receber notificações da AGENDA. Se você fechar o navegador, é possível que não receba as notificações!',
-                        Date.now() + 90 * 1000
+                        Date.now()
                     );
                 } else {
                     localStorage.setItem('notificationPermissionGranted', 'false');

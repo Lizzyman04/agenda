@@ -8,19 +8,30 @@ import GTDForm from './GTDForm';
 import { addTask } from '../../indexedDB';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { setMinutes, setHours, addMinutes } from 'date-fns';
+import { setMinutes, setHours, addMinutes, isToday, isBefore, setSeconds, setMilliseconds, addHours } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 
 const Add = () => {
+
+  const now = new Date();
+
+  const getNextThreeHours = () => setMinutes(setSeconds(setMilliseconds(addHours(now, 3), 0), 0), 0);
+
   const [method, setMethod] = useState(null);
   const [description, setDescription] = useState('');
-  const [deadline, setDeadline] = useState(null);
+  const [deadline, setDeadline] = useState(getNextThreeHours());
   const [importance, setImportance] = useState(3);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
 
   const handleSimpleSubmit = () => {
     if (validateForm()) {
+
+      if (isBefore(deadline, addMinutes(now, 10))) {
+        setErrorMessage('Data inválida: o prazo deve ser pelo menos 10 minutos no futuro.');
+        return;
+      }
+
       const task = {
         description,
         deadline,
@@ -50,7 +61,9 @@ const Add = () => {
     return description !== '' && deadline !== null && importance !== null;
   };
 
-  const currentTime = new Date();
+  const minDate = now;
+  const minTime = isToday(deadline) ? addMinutes(now, 10) : null;
+  const maxTime = isToday(deadline) ? setHours(setMinutes(now, 59), 23) : null;
 
   return (
     <div className="add-task">
@@ -63,16 +76,16 @@ const Add = () => {
               <p>Escolha um método para adicionar sua tarefa:</p>
               <ol>
                 <li>
-                  <p><strong>Adicionar Tarefa (Simples):</strong> Insira as informações básicas da tarefa (nome, prazo e importância). Este método é rápido e direto, perfeito para adicionar tarefas rapidamente sem muita organização.</p>
+                  <p><strong>Adicionar Tarefa (Simples):</strong> Insira as informações básicas da tarefa (nome, prazo e importância). Este método é rápido e direto, perfeito para adicionar tarefas rapidamente.</p>
                 </li>
                 <li>
-                  <p><strong>GTD (Getting Things Done):</strong> Avalie se a tarefa precisa ser feita e determine sua urgência. Este método sistemático aumenta a produtividade ao organizar tarefas e compromissos de forma eficiente, seguindo os passos de capturar, esclarecer, organizar, refletir e executar.</p>
+                  <p><strong>GTD (Getting Things Done):</strong> Avalie se a tarefa precisa ser feita e determine sua urgência. Este método é sistemático e aumenta a produtividade, capturando, esclarecendo, organizando, refletindo e executando as tarefas.</p>
                 </li>
               </ol>
             </>
           )}
           <div className="method-selection">
-            <button onClick={() => setMethod('Simple')}>Adicionar Tarefa</button>
+            <button onClick={() => setMethod('Simple')}>Adicionar Tarefa (Simples)</button>
             <button onClick={() => setMethod('GTD')}>GTD (Getting Things Done)</button>
           </div>
 
@@ -97,9 +110,9 @@ const Add = () => {
               timeIntervals={15}
               dateFormat="Pp"
               locale={ptBR}
-              minDate={new Date()}
-              minTime={addMinutes(new Date(), 10)}
-              maxTime={setHours(setMinutes(new Date(), 59), 23)}
+              minDate={minDate}
+              minTime={minTime}
+              maxTime={maxTime}
               placeholderText="Selecione a data e a hora"
               className="input-field"
             />

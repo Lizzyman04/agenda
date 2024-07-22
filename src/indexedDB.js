@@ -54,7 +54,7 @@ const addTask = async (task) => {
   task.updatedAt = new Date().toISOString();
 
   return new Promise((resolve, reject) => {
-    const taskRequest = taskStore.add(task);
+    const taskRequest = taskStore.add({...task, done: "0%"});
 
     taskRequest.onsuccess = () => {
       const taskId = taskRequest.result;

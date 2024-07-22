@@ -1,7 +1,29 @@
-/* Estilos para a tabela de tarefas */
+.table-container {
+    width: 100%;
+    max-height: 90vh;
+    overflow: auto;
+}
+
 table.task-table {
     width: 100%;
     border-collapse: collapse;
+}
+
+table.task-table .task-filter {
+    margin-bottom: 20px;
+}
+
+table.task-table .task-filter button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    margin: 6px;
+}
+
+table.task-table .task-filter button.active {
+    background-color: #ccc;
 }
 
 table.task-table td {
@@ -14,6 +36,7 @@ table.task-table th {
     background-color: #f2f2f2;
     border: 1px solid #ddd;
     padding: 24px 8px;
+    font-size: 16px;
 }
 
 table.task-table td.actions button {
@@ -24,6 +47,11 @@ table.task-table td.actions button {
 
 table.task-table td.task-name {
     text-align: left;
+}
+
+table.task-table th:nth-child(2),
+table.task-table td:nth-child(2) {
+    width: 30%;
 }
 
 .actions button {

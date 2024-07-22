@@ -47,6 +47,51 @@ body {
     }
 }
 
+.loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+blockquote {
+    font-family: 'Roboto', Arial, sans-serif;
+    font-size: 1.4em;
+    font-style: italic;
+    padding: 20px 40px;
+    margin: 20px 0;
+    border-left: 5px solid #4ba7ea;
+    border-radius: 15px;
+    position: relative;
+}
+
+@media (max-width: 768px) {
+    blockquote {
+        padding: 15px 30px;
+        font-size: 1.2em;
+    }
+}
+
+.loading-phrase {
+    padding: 2rem 0;
+    word-wrap: break-word;
+}
+
+.progress-bar {
+    width: 80%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    background-color: #4ba7ea;
+    transition: width 0.1s;
+}
+
 .login {
     display: flex;
     flex-direction: column;
@@ -56,7 +101,7 @@ body {
     height: 90vh;
 }
 
-.login .logo-login {
+.logo-login {
     display: flex;
     margin: 0 auto;
     align-items: center;
@@ -64,7 +109,7 @@ body {
     margin-bottom: 24px;
 }
 
-.login .logo-login img {
+.logo-login img {
     width: 95%;
     max-width: 325px;
     transition: all ease 1s;
@@ -147,6 +192,8 @@ body {
 .utils button {
     min-height: 50px;
     min-width: 150px;
+    width: 100%;
+    max-width: 320px;
     display: inline-block;
     padding: 10px 20px;
     margin: 10px;
@@ -177,6 +224,31 @@ body {
 @media (min-width: 576px) and (max-width: 992px) {
     .utils button {
         width: calc(42% - 30px);
+    }
+}
+
+
+.active-component p,
+.active-component h1,
+.active-component h2,
+.active-component h3,
+footer .settings h2 {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin-bottom: 20px;
+    font-size: 18.5px;
+    line-height: 2;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 625px) {
+
+    .active-component p,
+    .active-component h1,
+    .active-component h2,
+    .active-component h3,
+    footer .settings h2 {
+        line-height: 1.5;
+        font-size: 16.5px;
     }
 }
 
@@ -238,6 +310,7 @@ input[type="checkbox"]:checked::before {
         bottom: 0;
         opacity: 0;
     }
+
     to {
         bottom: 30px;
         opacity: 1;
@@ -249,6 +322,7 @@ input[type="checkbox"]:checked::before {
         bottom: 30px;
         opacity: 1;
     }
+
     to {
         bottom: 0;
         opacity: 0;
