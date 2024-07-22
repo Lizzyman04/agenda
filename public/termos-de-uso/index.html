@@ -29,6 +29,7 @@
 
     <!-- STYLESHEETS -->
     <link rel="stylesheet" href="/assets/css/use-terms.css">
+    <link rel="stylesheet" href="/assets/css/alerts.css">
 </head>
 
 <body>
@@ -185,7 +186,6 @@
             </p>
 
             <h3>Como ativar notificações?</h3>
-
             <strong>Google Chrome:</strong>
             <ol>
                 <li>Clique no cadeado ou ícone de informações à esquerda da URL na barra de endereço.</li>
@@ -224,6 +224,21 @@
             <p>
                 Você pode encontrar mais informações detalhadas sobre como gerenciar notificações em seu navegador na
                 página de suporte do seu navegador.
+            </p>
+            <h3>Você não está recebendo as notificações?</h3>
+            <p> Notificações são muito importantes para a AGENDA. Infelizmente, não é possível impedir que o Service
+                Worker (que é o recurso responsável por baixar todos os recursos do site para que você acesse offline e
+                enviar-lhe notificações) seja desactivado! Pois os navegadores controlam a sua vida útil para optimizar
+                o uso de recursos. </p>
+            <p>Como os seus dados não são armazenados em nossos servidores, esses eventos (enviar notificações) deve ser
+                disparado do seu próprio navegador, o que vem sendo um grande desafio implementar! Estamos comprometidos
+                em fornecer a melhor experiência possível e estamos constantemente trabalhando em melhorias. </p>
+            <p> Em um futuro próximo, lançaremos uma versão mobile do AGENDA que permitirá que você receba notificações
+                mesmo quando o aplicativo estiver fechado. Veja: <a href="#sobre-apoio" class="not_help">Sobre o projecto, como
+                    apoiar?</a></p>
+            <p>
+                Para testar se as notificações estão funcionando,
+                <button class="test-notifications">clique aqui.</button>
             </p>
         </section>
 
@@ -282,7 +297,6 @@
             </p>
         </section>
 
-
     </main>
 
     <footer>
@@ -293,6 +307,10 @@
             2024 &copy; <a href="https://tudocomlizzyman.com" target='_blank'>Tudo com Lizzyman</a>
         </p>
     </footer>
+    <div id="toast" class="toast">
+        <span id="toast-message"></span>
+    </div>
+    <script src="/assets/js/use-terms.js"></script>
 </body>
 
 </html>

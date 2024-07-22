@@ -20,7 +20,7 @@ const App = () => {
   const [progress, setProgress] = useState(0);
   const [phrase, setPhrase] = useState('');
 
-  const loadingTime = 5000;
+  const loadingTime = 3000;
 
   useEffect(() => {
 

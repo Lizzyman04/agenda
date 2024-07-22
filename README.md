@@ -29,7 +29,7 @@ As [contribuições](/CONTRIBUTORS.md) são bem-vindas! Para contribuir:
 
 ## Outras Informações
 
-Este projeto é licenciado sob os termos descritos no arquivo (LICENSE)[/LICENSE].
+Este projeto é licenciado sob os termos descritos no arquivo <a href="/LICENSE">LICENSE</a>.
 
 Este projeto foi realizado graças à valiosas [contribuições](/CONTRIBUTORS.md). Sem estes apoios, este projeto não teria sido possível.
 

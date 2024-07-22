@@ -54,11 +54,11 @@ const addTask = async (task) => {
   task.updatedAt = new Date().toISOString();
 
   return new Promise((resolve, reject) => {
-    const taskRequest = taskStore.add({...task, done: "0%"});
+    const taskRequest = taskStore.add({ ...task, done: "0%" });
 
     taskRequest.onsuccess = () => {
       const taskId = taskRequest.result;
-      const notifications = createNotifications(task.createdAt, task.deadline, task.importance,  task.description);
+      const notifications = createNotifications(task.createdAt, task.deadline, task.importance, task.description);
 
       notifications.forEach(notification => {
         const notificationRequest = notificationStore.add({ ...notification, taskId: taskRequest.result });
@@ -99,14 +99,16 @@ const editTask = async (task) => {
 
       request.onsuccess = (event) => {
         const cursor = event.target.result;
-        if (cursor) {
-          cursor.delete();
-          cursor.continue();
-        } else {
-          const notifications = createNotifications(task.createdAt, task.deadline, task.importance, task.id);
-          notifications.forEach(notification => notificationStore.add(notification));
-          resolve(task.id);
+        if (task.done === "0%") {
+          if (cursor) {
+            cursor.delete();
+            cursor.continue();
+          } else {
+            const notifications = createNotifications(task.createdAt, task.deadline, task.importance, task.description);
+            notifications.forEach(notification => notificationStore.add(notification));
+          }
         }
+        resolve(task.id);
       };
 
       request.onerror = (event) => {

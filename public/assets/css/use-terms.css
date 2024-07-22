@@ -25,15 +25,24 @@ body {
     padding: 2.5rem;
 }
 
-a {
+a,
+.test-notifications {
     color: #1e90ff;
     text-decoration: none;
     font-weight: 500;
     font-size: 1rem;
 }
 
-a:hover {
+a:hover,
+.test-notifications:hover {
     text-decoration: underline;
+}
+
+.test-notifications {
+    background: none;
+    font-size: 18.5px;
+    font-weight: bold;
+    border: none;
 }
 
 header {
@@ -71,6 +80,8 @@ section * {
 }
 
 @media screen and (max-width: 576px) {
+
+    .test-notifications,
     section * {
         font-size: 16.5px;
     }
@@ -104,7 +115,7 @@ section ul li::marker {
     content: "\2713";
 }
 
-#notificacoes a {
+#notificacoes a:not(.not_help) {
     font-size: 14px;
 }
 

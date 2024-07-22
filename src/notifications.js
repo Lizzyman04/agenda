@@ -78,7 +78,7 @@ const scheduleNotification = (title, body, time) => {
                     scheduleNotification(
                         'Lembrete: Navegador Em Segundo Plano',
                         'Mantenha o navegador aberto para receber notificações da AGENDA. Se você fechar o navegador, é possível que não receba as notificações!',
-                        Date.now()
+                        Date.now() + 30 * 1000
                     );
                 } else {
                     localStorage.setItem('notificationPermissionGranted', 'false');
