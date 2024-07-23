@@ -46,7 +46,9 @@ const Footer = () => {
         </button>
       </p>
       <div className={`settings ${isEditing ? 'show' : ''}`}>
-        <button className="close" onClick={() => setIsEditing(false)}>X</button>
+        <button className="close" onClick={() => setIsEditing(false)}>
+          <span className='css-icon close-icon'></span>
+        </button>
         <span className='info-new_settings'>Ao inserir seu nome, poderei chamá-lo pelo nome;
           ao usar uma senha, você garante que somente você tenha acesso aos seus dados.</span>
         <input

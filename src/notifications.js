@@ -60,7 +60,19 @@ const showToast = (message) => {
     setTimeout(() => {
         toast.classList.remove("show");
     }, 10000);
-}
+};
+
+const requestNotificationPermission = (callback) => {
+    Notification.requestPermission().then(permission => {
+        if (permission === 'granted') {
+            showToast('PERFEITO! Mantenha o navegador aberto para receber notificações.');
+            callback();
+        } else {
+            showToast('Permita que a agenda lhe envie notificações para lembrar das suas tarefas.');
+            console.error('Permissão para notificações não concedida.');
+        }
+    });
+};
 
 const scheduleNotification = (title, body, time) => {
     if (!('Notification' in window)) {
@@ -68,45 +80,19 @@ const scheduleNotification = (title, body, time) => {
         return console.error('Este navegador não suporta notificações.');
     }
 
-    const requestPermission = () => {
-        Notification.requestPermission().then(permission => {
-            if (!localStorage.getItem('notificationPermissionGranted')) {
-                if (permission === 'granted') {
-                    localStorage.setItem('notificationPermissionGranted', 'true');
-                    showToast('PERFEITO! Mantenha o navegador aberto para receber notificações.');
-                    scheduleNotification(title, body, time);
-                    scheduleNotification(
-                        'Lembrete: Navegador Em Segundo Plano',
-                        'Mantenha o navegador aberto para receber notificações da AGENDA. Se você fechar o navegador, é possível que não receba as notificações!',
-                        Date.now() + 30 * 1000
-                    );
-                } else {
-                    localStorage.setItem('notificationPermissionGranted', 'false');
-                    showToast('Permita que a agenda lhe envie notificações para lembrar das suas tarefas.');
-                    console.error('Permissão para notificações não concedida.');
-                }
-            } else if (localStorage.getItem('notificationPermissionGranted') != "true") {
-                location.href = "/termos-de-uso/#notificacoes";
-            }
-        });
-    };
-
-    if (Notification.permission !== 'granted') return requestPermission();
+    if (Notification.permission !== 'granted') {
+        return requestNotificationPermission(() => scheduleNotification(title, body, time));
+    }
 
     const now = Date.now();
     const delay = Math.max(time - now, 60 * 1000);
 
     navigator.serviceWorker.ready.then(registration => {
-        const interval = setInterval(() => {
-            if (navigator.serviceWorker.controller) {
-                clearInterval(interval);
-                navigator.serviceWorker.controller?.postMessage({
-                    action: 'schedule-notification',
-                    title, body, delay
-                });
-                console.log('Notification:', title, ' was scheduled for:', new Date(now + delay).toString());
-            }
-        }, 100);
+        registration.active.postMessage({
+            action: 'schedule-notification',
+            title, body, delay
+        });
+        console.log('Notification:', title, ' was scheduled for:', new Date(now + delay).toString());
     });
 };
 

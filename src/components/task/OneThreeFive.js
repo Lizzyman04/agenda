@@ -9,8 +9,31 @@ import { getTasks, editTask } from '../../indexedDB';
 const calculatePriority = task => (
   (task.importance / 5) * 0.35 +
   (1 - parseInt(task.done.replace('%', '')) / 100) * 0.25 +
-  (1 - Math.min(Math.max(0, (new Date(task.deadline) - new Date()) / (1000 * 60 * 60 * 24)) / 365, 1)) * 0.40
+  (Math.max(0, 86400000000 / ((new Date(task.deadline) - new Date()) + 5 * 86400000))) * 0.40
 );
+
+const prioritizeTasks = (tasks) => {
+  const prioritized = tasks
+    .filter(task => parseInt(task.done.replace('%', '')) < 100)
+    .map(task => ({ ...task, priority: calculatePriority(task) }))
+    .sort((a, b) => b.priority - a.priority);
+
+  const mainTask = prioritized.slice(0, 1);
+
+  const middleIndex = Math.floor(prioritized.length / 2);
+  const mediumTasks = prioritized.slice(middleIndex - 1, middleIndex + 2);
+
+  const minorTasks = prioritized.slice(-5);
+
+  const uniqueMediumTasks = mediumTasks.filter(task => !mainTask.includes(task));
+  const uniqueMinorTasks = minorTasks.filter(task => !mainTask.includes(task) && !uniqueMediumTasks.includes(task));
+
+  return {
+    main: mainTask,
+    medium: uniqueMediumTasks,
+    minor: uniqueMinorTasks
+  };
+};
 
 const OneThreeFive = () => {
   const [filteredTasks, setFilteredTasks] = useState({ main: [], medium: [], minor: [] });
@@ -21,17 +44,8 @@ const OneThreeFive = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       const tasks = await getTasks();
-      const prioritized = tasks
-        .filter(task => parseInt(task.done.replace('%', '')) < 100)
-        .map(task => ({ ...task, priority: calculatePriority(task) }))
-        .sort((a, b) => b.priority - a.priority);
-
-      setFilteredTasks({
-        main: prioritized.slice(0, 1),
-        medium: prioritized.slice(1, 4),
-        minor: prioritized.slice(4, 7)
-      });
       setTasks(tasks);
+      setFilteredTasks(prioritizeTasks(tasks));
     };
 
     fetchTasks();
@@ -53,33 +67,25 @@ const OneThreeFive = () => {
     setTasks(tasks.map(t => t.id === task.id ? updatedTask : t));
     await editTask(updatedTask);
     setEditingTaskId(null);
-    // Re-fetch tasks to update priorities
     const updatedTasks = await getTasks();
-    const prioritized = updatedTasks
-      .filter(task => parseInt(task.done.replace('%', '')) < 100)
-      .map(task => ({ ...task, priority: calculatePriority(task) }))
-      .sort((a, b) => b.priority - a.priority);
-
-    setFilteredTasks({
-      main: prioritized.slice(0, 1),
-      medium: prioritized.slice(1, 4),
-      minor: prioritized.slice(4, 7)
-    });
     setTasks(updatedTasks);
+    setFilteredTasks(prioritizeTasks(updatedTasks));
   };
 
   const renderTask = (task, isMain = false) => (
     <li className="task" key={task.id}>
       <div className="task-content">
-        <span
-          className={editingTaskId === task.id ? 'material-symbols--close' : 'tabler--status-change'}
-          onClick={() => handleStatusChangeClick(task.id)}
-        ></span>
-        {isMain ? (
-          <h2 className="primary-task">{task.description}</h2>
-        ) : (
-          <h3 className="secondary-task">{task.description}</h3>
-        )}
+        <div className='task-content-i'>
+          <span
+            className={editingTaskId === task.id ? 'css-icon close-icon' : 'css-icon change-icon'}
+            onClick={() => handleStatusChangeClick(task.id)}
+          ></span>
+          {isMain ? (
+            <h2 className="primary-task">{task.description}</h2>
+          ) : (
+            <h3 className="secondary-task">{task.description}</h3>
+          )}
+        </div>
         {editingTaskId === task.id && (
           <div className="edit-progress">
             <input
@@ -90,7 +96,7 @@ const OneThreeFive = () => {
               onChange={e => setProgress(e.target.value)}
             />
             <span>{progress}%</span>
-            <span className="material-symbols--save-outline" onClick={() => handleSaveChanges(task.id)}></span>
+            <span className="css-icon save-icon" onClick={() => handleSaveChanges(task.id)}></span>
           </div>
         )}
       </div>

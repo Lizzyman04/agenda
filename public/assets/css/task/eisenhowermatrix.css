@@ -1,0 +1,119 @@
+.eisenhower-matrix-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 90%;
+    margin: 0 auto;
+    gap: 20px;
+}
+
+.eisenhower-matrix-container .eisenhower-matrix {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.eisenhower-matrix-container .eisenhower-matrix>div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.eisenhower-matrix-container .paper {
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1;
+    line-height: 1;
+    display: flex;
+    min-height: 50vh;
+    flex-direction: column;
+}
+
+.eisenhower-matrix-container .title {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.eisenhower-matrix-container p {
+    margin-bottom: 0 !important;
+}
+
+.eisenhower-matrix-container .title p {
+    font-size: 10px;
+}
+
+.eisenhower-matrix-container .title h1 {
+    font-size: 32px;
+    line-height: 1 !important;
+    margin-top: 0 !important;
+}
+
+@media screen and (max-width: 768px) {
+    .eisenhower-matrix-container {
+        flex-direction: column;
+    }
+
+    .eisenhower-matrix-container .paper {
+        width: 100%;
+    }
+}
+
+.eisenhower-matrix-container ul {
+    display: flex;
+    list-style-type: none;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.eisenhower-matrix-container ul li {
+    padding: 0 10px;
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 4px 24px;
+}
+
+.eisenhower-matrix-container ul li .actions-e-desc {
+    gap: 8px;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+.eisenhower-matrix-container ul li button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.eisenhower-matrix-container ul li button {
+    padding: 4px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 10px;
+}
+
+.eisenhower-matrix-container ul li button img {
+    filter: invert(1);
+    width: 75%;
+}
+
+.eisenhower-matrix-container ul li button:hover {
+    background-color: #0056b3;
+}
+
+@media screen and (max-width: 768px) {
+    .eisenhower-matrix-container ul li button {
+        margin-top: 5px;
+        margin-left: 0;
+    }
+}

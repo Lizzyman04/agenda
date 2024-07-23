@@ -228,17 +228,13 @@ const TaskTable = () => {
                 <p><strong>Tempo Restante: </strong>{formatRemainingTime(selectedTask.deadline, selectedTask.done)}</p>
                 <p><strong>Importância: </strong>{['Muito baixa', 'Baixa', 'Média', 'Alta', 'Muito alta'][selectedTask.importance - 1]}</p>
                 <div className="actions">
-                  <button onClick={() => { setIsEditing(true); }}><img className="task-icon" src="/assets/img/edit-task.svg" alt="Editar" /></button>
-                  <button onClick={() => handleDeleteTask(selectedTask.id)}><img className="task-icon" src="/assets/img/delete-task.svg" alt="Eliminar" /></button>
+                  <button onClick={() => { setIsEditing(true); }}><span className="css-icon edit-icon"></span></button>
+                  <button onClick={() => handleDeleteTask(selectedTask.id)}><span className='css-icon delete-icon'></span></button>
                   <button
                     onClick={() => handlePinTask(selectedTask)}
                     className={selectedTask.isPinned ? 'pinned' : ''}
                   >
-                    <img
-                      className="task-icon"
-                      src={selectedTask.isPinned ? '/assets/img/unpin-task.svg' : '/assets/img/pin-task.svg'}
-                      alt="Destacar"
-                    />
+                    <span className={`css-icon ${selectedTask.isPinned ? 'unpin-icon' : 'pin-icon'}`}></span>
                   </button>
                 </div>
               </div>
@@ -300,17 +296,13 @@ const TaskTable = () => {
                   <button onClick={() => {
                     setSelectedTaskId(task.id);
                     setIsEditing(true);
-                  }}><img className="task-icon" src="/assets/img/edit-task.svg" alt="Editar" /></button>
-                  <button onClick={() => handleDeleteTask(task.id)}><img className="task-icon" src="/assets/img/delete-task.svg" alt="Eliminar" /></button>
+                  }}><span className="css-icon edit-icon"></span></button>
+                  <button onClick={() => handleDeleteTask(task.id)}><span className="css-icon delete-icon"></span></button>
                   <button
                     onClick={() => handlePinTask(task)}
                     className={task.isPinned ? 'pinned' : ''}
                   >
-                    <img
-                      className="task-icon"
-                      src={task.isPinned ? '/assets/img/unpin-task.svg' : '/assets/img/pin-task.svg'}
-                      alt="Destacar"
-                    />
+                    <span className={`css-icon ${task.isPinned ? 'unpin-icon' : 'pin-icon'}`}></span>
                   </button>
                 </td>
               </tr>
