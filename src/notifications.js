@@ -84,8 +84,7 @@ const scheduleNotification = (title, body, time) => {
         return requestNotificationPermission(() => scheduleNotification(title, body, time));
     }
 
-    const now = Date.now();
-    const delay = Math.max(time - now, 60 * 1000);
+    const delay = Math.max(new Date(time) - Date.now(), 100);
 
     navigator.serviceWorker.ready.then(registration => {
         registration.active.postMessage({

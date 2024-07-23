@@ -58,6 +58,7 @@
     gap: 12px;
     display: flex;
     flex-wrap: nowrap;
+    align-items: baseline;
 }
 
 .one-three-five-rule .task-content span,
