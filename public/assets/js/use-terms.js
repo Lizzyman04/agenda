@@ -28,10 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if ('serviceWorker' in navigator && 'Notification' in window) {
             navigator.serviceWorker.ready.then(registration => {
                 registration.active.postMessage({
-                    action: 'schedule-notification',
+                    action: 'test-notification',
                     title: 'Teste de Notificação',
                     body: 'Esta é uma notificação de teste do AGENDA.',
-                    delay: 1000
                 });
                 showToast(`Tentativa (${attempts}) - Notificação de teste enviada.`);
             });

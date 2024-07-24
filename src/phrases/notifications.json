@@ -61,26 +61,26 @@
   },
   {
     "title": "Por aqui?",
-    "left_desc": "Ei, já que está por aqui, que tal trabalhar na tarefa",
+    "left_desc": "Ei_username_, já que está por aqui, que tal trabalhar na tarefa",
     "right_desc": "?"
   },
   {
-    "title": "Boa ideia!",
+    "title": "Boa ideia_username_!",
     "left_desc": "Lembra daquela tarefa",
     "right_desc": "que você planejou? Pode ser um bom momento para começar."
   },
   {
-    "title": "Mantenha o ritmo!",
+    "title": "Mantenha o ritmo_username_!",
     "left_desc": "Vamos manter o ritmo! Que tal dar uma olhada na tarefa",
     "right_desc": "agora?"
   },
   {
-    "title": "Você consegue!",
+    "title": "Você consegue_username_!",
     "left_desc": "Você está indo muito bem! Vamos finalizar a tarefa",
     "right_desc": "?"
   },
   {
-    "title": "Mais uma!",
+    "title": "Mais uma_username_!",
     "left_desc": "Pronto para mais uma? A tarefa",
     "right_desc": "está esperando por você!"
   },
@@ -90,7 +90,7 @@
     "right_desc": ". Que tal começar agora?"
   },
   {
-    "title": "Produtividade!",
+    "title": "Ei_username_...",
     "left_desc": "Que tal ser produtivo agora? A tarefa",
     "right_desc": "pode ser concluída em breve!"
   },
@@ -115,8 +115,8 @@
     "right_desc": "? Você consegue!"
   },
   {
-    "title": "Está livre?",
-    "left_desc": "Ei, você marcou de fazer",
+    "title": "Ei_username_, está livre?",
+    "left_desc": "Você marcou de fazer",
     "right_desc": "agora. Está com tempo livre para isso?"
   },
   {

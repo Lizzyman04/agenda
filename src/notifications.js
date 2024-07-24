@@ -4,6 +4,7 @@
 // Para contribuições, visite https://github.com/Lizzyman04/agenda
 
 import notificationsData from './phrases/notifications.json';
+import { getSettings } from './indexedDB';
 
 const calculateNotifications = (createdAt, deadline, importance) => {
     const createdDate = new Date(createdAt);
@@ -25,29 +26,29 @@ const calculateNotifications = (createdAt, deadline, importance) => {
     return notifications;
 };
 
-const getRandomNotification = () => {
-    const notifications = notificationsData;
-    const randomIndex = Math.floor(Math.random() * notifications.length);
-    return notifications[randomIndex];
+const getNotificationDetails = async (desc) => {
+    const { title, left_desc, right_desc } = notificationsData[Math.floor(Math.random() * notificationsData.length)];
+    const { name: username = '' } = await getSettings(1) || {};
+
+    const formatString = str => str.replace('_username_', username ? ` ${username}` : '');
+    const formattedTitle = formatString(title);
+    const formattedMessage = `${formatString(left_desc)} ${formatString(desc)} ${formatString(right_desc)}`;
+
+    return { title: formattedTitle, message: formattedMessage };
 };
 
-const createNotifications = (createdAt, deadline, importance, task_desc) => {
+const createNotifications = async (createdAt, deadline, importance, desc) => {
     const notificationDates = calculateNotifications(createdAt, deadline, importance);
-    return notificationDates.map(date => {
-        const { title, left_desc, right_desc } = getRandomNotification();
-        const message = `${left_desc} ${task_desc} ${right_desc}`;
+    const notifications = await Promise.all(notificationDates.map(async date => {
+        const { title, message } = await getNotificationDetails(desc);
         const sendDate = date.toISOString();
+        
+        scheduleNotification(title, message, date.getTime());
 
-        scheduleNotification(title, message, new Date(sendDate).getTime());
+        return { desc, sendDate, title, message, status: 'pending' };
+    }));
 
-        return {
-            task_desc,
-            sendDate,
-            title,
-            message,
-            status: 'pending'
-        };
-    });
+    return notifications;
 };
 
 const showToast = (message) => {
@@ -84,7 +85,8 @@ const scheduleNotification = (title, body, time) => {
         return requestNotificationPermission(() => scheduleNotification(title, body, time));
     }
 
-    const delay = Math.max(new Date(time) - Date.now(), 100);
+    const now = Date.now();
+    const delay = Math.max(time - now, 100);
 
     navigator.serviceWorker.ready.then(registration => {
         registration.active.postMessage({

@@ -46,9 +46,8 @@ const openDB = () => {
 // Task methods
 const addTask = async (task) => {
   const db = await openDB();
-  const transaction = db.transaction(['tasks', 'notifications'], 'readwrite');
+  const transaction = db.transaction(['tasks'], 'readwrite');
   const taskStore = transaction.objectStore('tasks');
-  const notificationStore = transaction.objectStore('notifications');
 
   task.createdAt = new Date().toISOString();
   task.updatedAt = new Date().toISOString();
@@ -56,23 +55,33 @@ const addTask = async (task) => {
   return new Promise((resolve, reject) => {
     const taskRequest = taskStore.add({ ...task, done: "0%" });
 
-    taskRequest.onsuccess = () => {
+    taskRequest.onsuccess = async () => {
       const taskId = taskRequest.result;
-      const notifications = createNotifications(task.createdAt, task.deadline, task.importance, task.description);
+      try {
+        const notifications = await createNotifications(task.createdAt, task.deadline, task.importance, task.description);
 
-      notifications.forEach(notification => {
-        const notificationRequest = notificationStore.add({ ...notification, taskId: taskRequest.result });
+        // Criar uma nova transação para as notificações
+        const notificationTransaction = db.transaction(['notifications'], 'readwrite');
+        const notificationStore = notificationTransaction.objectStore('notifications');
 
-        notificationRequest.onsuccess = () => {
-          console.log('Notification added:', notification);
-        };
-
-        notificationRequest.onerror = (event) => {
-          console.error('Error adding notification:', event.target.errorCode);
-        };
-      });
-
-      resolve(taskId);
+        const notificationPromises = notifications.map(notification => {
+          return new Promise((resolve, reject) => {
+            const notificationRequest = notificationStore.add({ ...notification, taskId: taskId });
+            notificationRequest.onsuccess = () => {
+              console.log('Notification added:', notification);
+              resolve();
+            };
+            notificationRequest.onerror = (event) => {
+              console.error('Error adding notification:', event.target.errorCode);
+              reject('Error adding notification:', event.target.errorCode);
+            };
+          });
+        });
+        await Promise.all(notificationPromises);
+        resolve(taskId);
+      } catch (error) {
+        reject(error);
+      }
     };
 
     taskRequest.onerror = (event) => {
@@ -83,40 +92,74 @@ const addTask = async (task) => {
 
 const editTask = async (task) => {
   const db = await openDB();
-  const transaction = db.transaction(['tasks', 'notifications'], 'readwrite');
-  const taskStore = transaction.objectStore('tasks');
-  const notificationStore = transaction.objectStore('notifications');
+  const taskTransaction = db.transaction(['tasks'], 'readwrite');
+  const taskStore = taskTransaction.objectStore('tasks');
 
   task.updatedAt = new Date().toISOString();
 
   return new Promise((resolve, reject) => {
     const taskRequest = taskStore.put(task);
 
-    taskRequest.onsuccess = () => {
-      const index = notificationStore.index('taskId');
-      const range = IDBKeyRange.only(task.id);
-      const request = index.openCursor(range);
+    taskRequest.onsuccess = async () => {
+      if (task.done === "0%") {
+        try {
+          // Transação para deletar notificações
+          await new Promise((resolve, reject) => {
+            const deleteTransaction = db.transaction(['notifications'], 'readwrite');
+            const notificationStore = deleteTransaction.objectStore('notifications');
+            const index = notificationStore.index('taskId');
+            const range = IDBKeyRange.only(task.id);
 
-      request.onsuccess = (event) => {
-        const cursor = event.target.result;
-        if (task.done === "0%") {
-          if (cursor) {
-            cursor.delete();
-            cursor.continue();
-          } else {
-            const notifications = createNotifications(task.createdAt, task.deadline, task.importance, task.description);
-            notifications.forEach(notification => notificationStore.add(notification));
-          }
+            const request = index.openCursor(range);
+            request.onsuccess = (event) => {
+              const cursor = event.target.result;
+              if (cursor) {
+                cursor.delete();
+                cursor.continue();
+              } else {
+                resolve();
+              }
+            };
+            request.onerror = (event) => {
+              console.error('Error deleting notifications:', event.target.errorCode);
+              reject('Error deleting notifications:', event.target.errorCode);
+            };
+          });
+
+          // Transação para adicionar notificações
+          const notifications = await createNotifications(task.createdAt, task.deadline, task.importance, task.description);
+          await new Promise((resolve, reject) => {
+            const notificationTransaction = db.transaction(['notifications'], 'readwrite');
+            const notificationStore = notificationTransaction.objectStore('notifications');
+            
+            let completed = 0;
+            notifications.forEach(notification => {
+              const request = notificationStore.add({ ...notification, taskId: task.id });
+              request.onsuccess = () => {
+                completed += 1;
+                if (completed === notifications.length) {
+                  resolve();
+                }
+              };
+              request.onerror = (event) => {
+                console.error('Error adding notification:', event.target.errorCode);
+                reject('Error adding notification:', event.target.errorCode);
+              };
+            });
+          });
+
+          resolve(task.id);
+        } catch (error) {
+          console.error('Error managing notifications:', error);
+          reject('Error managing notifications:', error);
         }
+      } else {
         resolve(task.id);
-      };
-
-      request.onerror = (event) => {
-        reject('Error deleting notifications:', event.target.errorCode);
-      };
+      }
     };
 
     taskRequest.onerror = (event) => {
+      console.error('Error editing task:', event.target.errorCode);
       reject('Error editing task:', event.target.errorCode);
     };
   });
@@ -223,16 +266,14 @@ const getTasks = async () => {
   });
 };
 
-const getNotifications = async (taskId) => {
+const getNotifications = async () => {
   const db = await openDB();
   const transaction = db.transaction(['notifications'], 'readonly');
   const notificationStore = transaction.objectStore('notifications');
-  const index = notificationStore.index('taskId');
-  const range = IDBKeyRange.only(taskId);
   const notifications = [];
 
   return new Promise((resolve, reject) => {
-    const request = index.openCursor(range);
+    const request = notificationStore.openCursor();
     request.onsuccess = (event) => {
       const cursor = event.target.result;
       if (cursor) {
@@ -243,6 +284,18 @@ const getNotifications = async (taskId) => {
       }
     };
     request.onerror = () => reject('Error fetching notifications');
+  });
+};
+
+const deleteNotification = async (id) => {
+  const db = await openDB();
+  const transaction = db.transaction(['notifications'], 'readwrite');
+  const notificationStore = transaction.objectStore('notifications');
+
+  return new Promise((resolve, reject) => {
+    const request = notificationStore.delete(id);
+    request.onsuccess = () => resolve();
+    request.onerror = () => reject('Error deleting notification');
   });
 };
 
@@ -311,4 +364,4 @@ const removeExpiredNotifications = async () => {
   });
 };
 
-export { addTask, editTask, removeTask, getTask, getTasks, saveSettings, getSettings, getNotifications };
+export { addTask, editTask, removeTask, getTask, getTasks, saveSettings, getSettings, getNotifications, deleteNotification };

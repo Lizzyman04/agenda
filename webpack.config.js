@@ -40,5 +40,10 @@ module.exports = {
     },
     compress: true,
     port: 9000,
+    historyApiFallback: {
+      rewrites: [
+        { from: /^\/404$/, to: '/termos-de-uso' },
+      ],
+    },
   },
 };
