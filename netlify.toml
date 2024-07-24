@@ -1,0 +1,8 @@
+[build]
+  publish = "public"
+
+[[redirects]]
+  from = "/*"
+  to = "/termos-de-uso/index.html"
+  status = 404
+  force = true
