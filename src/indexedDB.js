@@ -103,7 +103,6 @@ const editTask = async (task) => {
     taskRequest.onsuccess = async () => {
       if (task.done === "0%") {
         try {
-          // Transação para deletar notificações
           await new Promise((resolve, reject) => {
             const deleteTransaction = db.transaction(['notifications'], 'readwrite');
             const notificationStore = deleteTransaction.objectStore('notifications');
@@ -126,7 +125,6 @@ const editTask = async (task) => {
             };
           });
 
-          // Transação para adicionar notificações
           const notifications = await createNotifications(task.createdAt, task.deadline, task.importance, task.description);
           await new Promise((resolve, reject) => {
             const notificationTransaction = db.transaction(['notifications'], 'readwrite');
